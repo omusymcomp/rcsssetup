@@ -92,7 +92,15 @@ This tool provides several command-line options to control the setup and install
     ```bash
     python3 setup.py -j 4
     ``` 
-    
+
+- `-h` or `--help`
+  - Description: Display the help message for the setup script. This shows the available options and their descriptions.
+
+  - Example:
+    ```bash
+    python3 setup.py -h
+    ``` 
+
 ## Directory Tree
 <pre>
 $HOME
@@ -163,6 +171,14 @@ This script provides several command-line options to control match settings:
     ```bash
     python3 auto_match.py --is_synch_mode
     ```
+
+- `-h` or `--help`
+  - Description: Display the help message for the auto match script. This shows the available options and their descriptions.
+
+  - Example:
+    ```bash
+    python3 auto_match.py -h
+    ``` 
 
 ### Mathch Logs
 
