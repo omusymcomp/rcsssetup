@@ -36,7 +36,7 @@ This tool automates the process of setting up the RoboCup Soccer 2D League envir
 
 This tool provides several command-line options to control the setup and installation process.
 
-- `-d` or `--base_dir`  
+- `-d <BASE_DIR_PATH>` or `--base_dir <BASE_DIR_PATH>`
   - Description: Specify the base directory for setting up the environment.  
   - Default: `$HOME/rcss`  
   - Example:  
@@ -44,7 +44,7 @@ This tool provides several command-line options to control the setup and install
     python3 setup.py -d /path/to/your/directory
     ```
 
-- `-t` or `--install_target`  
+- `-t <INSTALL_TARGET>` or `--install_target <INSTALL_TARGET>`  
   - Description: Specify the target to install. `all` installs everything, `minisetup` installs the minimal setup required to run the simulation. For individual tools or teams, choose from the following:
     - `all`: Installs all tools and teams
     - `minisetup`: Installs only the minimal setup required to run the simulation
@@ -85,7 +85,7 @@ This tool provides several command-line options to control the setup and install
     python3 setup.py --add_environment_variable
     ```
 
-- `-j` or `--jobs`
+- `-j <NUM_JOBS>` or `--jobs <NUM_JOBS>`
   - Description: Specify the number of jobs to run simultaneously during compilation. This option  directly sets the make -j parameter, allowing for faster compilation by using multiple CPU cores.
 
   - Example:
@@ -137,7 +137,7 @@ python3 auto_match.py
 
 This script provides several command-line options to control match settings:
 
-- `-d` or `--base_dir`
+- `-d  <BASE_DIR>` or `--base_dir <BASE_DIR>`
   - Description: Specify the base directory for the environment.
   - Default: `$HOME/rcss`
   - Example:
@@ -145,18 +145,45 @@ This script provides several command-line options to control match settings:
     python3 auto_match.py -d /path/to/your/base/directory
     ```
 
-- `-l` or `--left_team_name`
+- `-l <LEFT_TEAM_NAME>` or `--left_team_name <LEFT_TEAM_NAME>`
   - Description: Specify the name of the team to play on the left side. 
+    - `HELIOS2023`  
+    - `helios-base`  
+    - `YuShan2023`  
+    - `CYRUS`  
+    - `Oxsy`  
+    - `RoboCIn`  
+    - `Damavand`  
+    - `FRA-UNIted`  
+    - `Hades2D`  
+    - `ITAndroids`  
+    - `The8`  
+    - `R3CESBU`  
+    - `robo2d`  
   - Default: `HELIOS2023`
-- `-r` or `--right_team_name`
-  - Description: Specify the name of the team to play on the right side. 
+
+- `-r <RIGHT_TEAM_NAME>` or `--right_team_name <RIGHT_TEAM_NAME>`
+  - Description: Specify the name of the team to play on the right side.
+    - `HELIOS2023`  
+    - `helios-base`  
+    - `YuShan2023`  
+    - `CYRUS`  
+    - `Oxsy`  
+    - `RoboCIn`  
+    - `Damavand`  
+    - `FRA-UNIted`  
+    - `Hades2D`  
+    - `ITAndroids`  
+    - `The8`  
+    - `R3CESBU`  
+    - `robo2d`   
   - Default: `CYRUS`
   - Example:  
     ```bash
     python3 auto_match.py -l HELIOS2023 -r CYRUS
     ```
 
-- `-n` or `--match_number`
+- `-n <MATCH_NUMBER>` or `--match_number <MATCH_NUMBER>`
   - Description: Specify the number of matches to be played.
   - Default: `3`
   - Example:
