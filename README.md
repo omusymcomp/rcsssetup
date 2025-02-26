@@ -217,7 +217,7 @@ $BASE_DIR/log_analysis/log/YYYYMMDDHHMMSS/
 
 ### Envirionment Variables
 
-you can configure the following environment variables foe advance setups:
+you can configure the following environment variables for advance setups:
 - `TEAM_DIR`: Directory where teams are stored.
 - `MATCH_LOG_DIR`: Directory where auto match logs are saved.
 ```bash
