@@ -12,11 +12,11 @@ def main():
     parser.add_argument("-l", "--left_team_name", dest="left_team_name", default="HELIOS2023", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
-                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d"], help="Specify the left team name")
+                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars"], help="Specify the left team name")
     parser.add_argument("-r", "--right_team_name", dest="right_team_name", default="CYRUS", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
-                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d"], help="Specify the right team name")
+                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d""mars"], help="Specify the right team name")
     parser.add_argument("-n", "--match_number", dest="match_number", default=3, type=int, 
                         help="Specify the number of matches")
     parser.add_argument("--is_synch_mode", action="store_true", dest="is_synch_mode", help="Specify if synch mode should be enabled")
@@ -41,14 +41,15 @@ class AutoMatch:
         # "EMPEROR": "start.sh",
         "Hades2D": "localStartAll",
         "Oxsy": "startlocal",
-        "The8": "startAll"
+        "The8": "startAll",
+        "mars":"bins/start.sh"
     }
 
     def __init__(self, args):
         now = datetime.now()
         self.formatted_date_time = now.strftime("%Y%m%d%H%M%S")
         self.log_dir = os.getenv("MATCH_LOG_DIR", f"{args.base_dir}/log_analysis/log/{self.formatted_date_time}")
-        self.team_binary_dir = os.getenv("TEAM_DIR", f"{args.base_dir}/teams/rc2023")
+        self.team_binary_dir = os.getenv("TEAM_DIR", f"{args.base_dir}/teams/rc2024")
         self.left_team_path_list = []
         self.right_team_path_list = []
         self.output_text = None
