@@ -16,7 +16,7 @@ def main():
     parser.add_argument("-r", "--right_team_name", dest="right_team_name", default="CYRUS", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
-                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d""mars"], help="Specify the right team name")
+                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars"], help="Specify the right team name")
     parser.add_argument("-n", "--match_number", dest="match_number", default=3, type=int, 
                         help="Specify the number of matches")
     parser.add_argument("--is_synch_mode", action="store_true", dest="is_synch_mode", help="Specify if synch mode should be enabled")
