@@ -2,7 +2,7 @@ import subprocess
 import argparse
 import sys
 import os
-
+import getpass
 
 def main():
     # Initialize Git LFS globally
@@ -233,7 +233,8 @@ class SetupTools:
 class SetupTeams:
     def __init__(self, args):
         # Dynamically get the username of the executor and construct the path
-        username = os.getlogin()
+        #username = os.getlogin()
+        username = getpass.getuser()
         self.base_dir = args.base_dir
         self.teams_dir = os.path.join(self.base_dir, "teams")
         self.user_teams_dir = os.path.join(self.base_dir, "teams")
@@ -340,7 +341,8 @@ class SetupTeams:
 
     def replace_username(self):
         # Get the username of the executor
-        username = os.getlogin()
+        #username = os.getlogin()
+        username = getpass.getuser()
         directory = self.user_teams_dir
         try:
             if not os.path.exists(directory):
