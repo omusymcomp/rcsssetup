@@ -33,18 +33,10 @@ This tool automates the process of setting up the RoboCup Soccer 2D League envir
     ```
 
 ### Note on WSL2
-Users of WSL2 may have some problems during the installation. One workaround would be described in the following:
+Users of WSL2 may have some problems during the installation. One workaround is described in the following:
 - It is better to update the apt repository as the first command
   ```bash
   sudo apt update; sudo apt upgrade
-  ```
-- setup.py may produce the error "OSError: [Errno 6] No such device or address" when getting os.getlogin(). One workaround, which might not be the best practice, would be the following:
-  ```bash
-  echo $UID > /proc/self/loginuid
-  ```
-- soccerwindow2 may produce an error message as "QStandardPaths: wrong permissions on runtime directory /run/user/1000/, 0755 instead of 0700". One workaround is to add the following line in .bashrc
-  ```
-  chmod 0700 /run/user/1000/
   ```
 
 ### Command-Line Options
