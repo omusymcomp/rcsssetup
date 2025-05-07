@@ -20,6 +20,9 @@ def main():
     parser.add_argument("-n", "--match_number", dest="match_number", default=3, type=int, 
                         help="Specify the number of matches")
     parser.add_argument("--is_synch_mode", action="store_true", dest="is_synch_mode", help="Specify if synch mode should be enabled")
+    parser.add_argument("-y", "--team_year", dest="team_year", default="rc2024", choices=["rc2023", "rc2024"],
+                    help="Specify the year of the team binaries to use (rc2023 or rc2024)")
+
     
     args = parser.parse_args()
     auto_match = AutoMatch(args)
@@ -27,7 +30,7 @@ def main():
 
 class AutoMatch:
     # チームごとの起動スクリプトを定義
-    team_start_scripts = {
+    team_start_scripts_2023 = {
         "CYRUS": "startAll",
         "FRA-UNIted": "startlocal.sh",
         # "Hermes2D": "start.sh",
@@ -45,11 +48,22 @@ class AutoMatch:
         "mars":"bins/start.sh"
     }
 
+    team_start_scripts_2024 = {
+        "aeteam": "start.sh",
+        "cyrus": "startAll",
+        "oxcy": "startlocal",
+        "r2d2": "start.sh",
+        "helios": "start.sh",
+        "fra-united": "start_team.sh",
+        "itandroids": "start.sh",
+        "mars": "start.sh"
+    }
+
     def __init__(self, args):
         now = datetime.now()
         self.formatted_date_time = now.strftime("%Y%m%d%H%M%S")
         self.log_dir = os.getenv("MATCH_LOG_DIR", f"{args.base_dir}/log_analysis/log/{self.formatted_date_time}")
-        self.team_binary_dir = os.getenv("TEAM_DIR", f"{args.base_dir}/teams/rc2023")
+        self.team_binary_dir = os.getenv("TEAM_DIR", f"{args.base_dir}/teams/rc2024")
         self.left_team_path_list = []
         self.right_team_path_list = []
         self.output_text = None
@@ -77,9 +91,15 @@ class AutoMatch:
 
     def get_team_path(self, team_name):
         team_path_base = f"{self.team_binary_dir}/{team_name}"
-        # チームに対応する起動スクリプトを取得
-        script_name = self.team_start_scripts.get(team_name, "start.sh")
-        return f"{team_path_base}/{script_name}"    
+        
+        if "rc2024" in self.team_binary_dir:
+            # rc2024 用のスクリプト名マッピングを使う
+            script_name = self.team_start_scripts_2024.get(team_name.lower(), "start.sh")
+            return f"{team_path_base}/bin/{script_name}"
+        else:
+            # 通常のスクリプト名マッピングを使う
+            script_name = self.team_start_scripts_2023.get(team_name, "start.sh")
+            return f"{team_path_base}/{script_name}"
 
     def run_command(self, command):
         try:

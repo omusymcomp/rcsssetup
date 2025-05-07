@@ -19,7 +19,7 @@ This tool automates the process of setting up the RoboCup Soccer 2D League envir
 
 1. **Install git, Python3, pip, and git-lfs**
     ```bash
-    sudo apt-get install -y git python3 python3-pip git-lfs
+    sudo apt-get install -y git python3 python3-pip git-lfs gdown
     ```
 2. **Clone this repository**:
     ```bash
