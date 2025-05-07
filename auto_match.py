@@ -12,11 +12,13 @@ def main():
     parser.add_argument("-l", "--left_team_name", dest="left_team_name", default="helios2024", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
-                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars"], help="Specify the left team name")
+                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars","aeteam", 
+                                 "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024"], help="Specify the left team name")
     parser.add_argument("-r", "--right_team_name", dest="right_team_name", default="cyrus", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
-                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars"], help="Specify the right team name")
+                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars","aeteam",
+                                   "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024"], help="Specify the right team name")
     parser.add_argument("-n", "--match_number", dest="match_number", default=3, type=int, 
                         help="Specify the number of matches")
     parser.add_argument("--is_synch_mode", action="store_true", dest="is_synch_mode", help="Specify if synch mode should be enabled")
@@ -45,7 +47,8 @@ class AutoMatch:
         "Hades2D": "localStartAll",
         "Oxsy": "startlocal",
         "The8": "startAll",
-        "mars":"bins/start.sh"
+        "mars":"bins/start.sh",
+        "yushan2024": "start.sh"
     }
 
     team_start_scripts_2024 = {
@@ -56,7 +59,8 @@ class AutoMatch:
         "helios": "start.sh",
         "fra-united": "start_team.sh",
         "itandroids": "start.sh",
-        "mars": "start.sh"
+        "mars": "start.sh",
+        "yushan2024": "start.sh"
     }
 
     def __init__(self, args):
