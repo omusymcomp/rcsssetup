@@ -3,6 +3,7 @@ import argparse
 import sys
 import os
 import getpass
+import gdown
 
 def main():
     # Initialize Git LFS globally
@@ -313,10 +314,10 @@ class SetupTeams:
             print("Downloading and extracting RoboCup 2024 teams...")
 
             # Google Drive から bins_day4.tar.gz をダウンロード
-            download_url = "https://drive.google.com/uc?export=download&id=1amLM3aanMrZSxc4_ynE0ZE1oxiuDI-Bo"
+            file_id = "1amLM3aanMrZSxc4_ynE0ZE1oxiuDI-Bo"
             local_tar_path = os.path.join(self.base_dir, "bins_day4.tar.gz")  # 一時保存用
 
-            self.run_command(f"wget -O {local_tar_path} {download_url}")
+            gdown.download(f"https://drive.google.com/uc?id={file_id}", local_tar_path, quiet=False)
 
             # 解凍（この時点で bins_Day4/ が base_dir にできる）
             self.run_command(f"tar -xzvf {local_tar_path} -C {self.base_dir}")
