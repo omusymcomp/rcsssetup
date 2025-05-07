@@ -320,7 +320,7 @@ class SetupTeams:
             gdown.download(f"https://drive.google.com/uc?id={file_id}", local_tar_path, quiet=False)
 
             # 解凍（この時点で bins_Day4/ が base_dir にできる）
-            self.run_command(f"tar -xzvf {local_tar_path} -C {self.base_dir}")
+            self.run_command(f"tar -xvf {local_tar_path} -C {self.base_dir}")
 
             # bins_Day4 → rc2024 にリネーム
             extracted_path = os.path.join(self.base_dir, "bins_Day4")
