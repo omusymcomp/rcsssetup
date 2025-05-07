@@ -36,6 +36,7 @@ def main():
         # setup_tools.install_fedit2()
         setup_tools.install_loganalyzer3()
         setup_teams.install_teams()
+        setup_teams.install_2024_temas()
         setup_teams.install_helios_base()
         setup_teams.replace_username()
         setup_teams.add_execution_permission()
@@ -53,6 +54,7 @@ def main():
         setup_tools.install_loganalyzer3()
     elif args.install_target == "teams":
         setup_teams.install_teams()
+        setup_teams.install_2024_temas()
         setup_teams.replace_username()
         setup_teams.add_execution_permission()
     else:
@@ -239,6 +241,7 @@ class SetupTeams:
         self.teams_dir = os.path.join(self.base_dir, "teams")
         self.user_teams_dir = os.path.join(self.base_dir, "teams")
         self.base_team_dir = os.path.join(self.base_dir, "teams", "base_team")
+        self.rc2024_dir = os.path.join(self.base_dir, "teams", "rc2024")
         self.rc2023_dir = os.path.join(self.base_dir, "teams", "rc2023")
         self.rc2022_dir = os.path.join(self.base_dir, "teams", "rc2022")
         self.rcsssetup_teams_dir = f"/home/{username}/rcsssetup/teams"
@@ -304,6 +307,33 @@ class SetupTeams:
             self.run_command(f"find {self.teams_dir} -name '*.tar.xz' -delete", cwd=self.rc2022_dir)
         else:
             print(f"{self.rc2022_dir} exists, skipping download")
+
+    def install_2024_teams(self):
+        if not os.path.exists(os.path.join(self.rc2024_dir, "helios2024")):
+            print("Downloading and extracting RoboCup 2024 teams...")
+
+            # Google Drive から bins_day4.tar.gz をダウンロード
+            download_url = "https://drive.google.com/uc?export=download&id=1amLM3aanMrZSxc4_ynE0ZE1oxiuDI-Bo"
+            local_tar_path = os.path.join(self.base_dir, "bins_day4.tar.gz")  # 一時保存用
+
+            self.run_command(f"wget -O {local_tar_path} {download_url}")
+
+            # 解凍（この時点で bins_Day4/ が base_dir にできる）
+            self.run_command(f"tar -xzvf {local_tar_path} -C {self.base_dir}")
+
+            # bins_Day4 → rc2024 にリネーム
+            extracted_path = os.path.join(self.base_dir, "bins_Day4")
+            if os.path.exists(extracted_path):
+                os.rename(extracted_path, self.rc2024_dir)
+
+            # 圧縮ファイルを削除
+            os.remove(local_tar_path)
+
+            # 初期設定をコピー（必要であれば）
+            self.run_command(f"cp -r {self.rcsssetup_teams_dir}/. {self.teams_dir}/")
+        else:
+            print(f"{self.rc2024_dir} already exists. Skipping download.")
+
 
     def install_librcsc_for_helios_base(self):
         # Compile librcsc for HELIOS-Base
