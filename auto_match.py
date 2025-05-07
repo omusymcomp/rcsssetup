@@ -9,11 +9,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--base_dir", dest="base_dir", default=os.path.expandvars("$HOME/rcss"), 
                         help="Specify the base directory for environment setup")
-    parser.add_argument("-l", "--left_team_name", dest="left_team_name", default="HELIOS2023", 
+    parser.add_argument("-l", "--left_team_name", dest="left_team_name", default="helios2024", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
                                  "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars"], help="Specify the left team name")
-    parser.add_argument("-r", "--right_team_name", dest="right_team_name", default="CYRUS", 
+    parser.add_argument("-r", "--right_team_name", dest="right_team_name", default="cyrus", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
                                  "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars"], help="Specify the right team name")
@@ -30,7 +30,7 @@ def main():
 
 class AutoMatch:
     # チームごとの起動スクリプトを定義
-    team_start_scripts_2023 = {
+    team_start_scripts_203 = {
         "CYRUS": "startAll",
         "FRA-UNIted": "startlocal.sh",
         # "Hermes2D": "start.sh",
