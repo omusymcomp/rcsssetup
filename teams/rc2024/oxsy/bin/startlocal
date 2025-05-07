@@ -1,0 +1,30 @@
+#! /bin/bash
+
+HOST="localhost"
+HOMEDIR=`dirname $0`
+
+cd $HOMEDIR
+
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 1 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 2 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 3 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 4 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 5 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 6 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 7 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 8 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 9 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 10 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 11 &
+sleep 1
+/home/username/rcss/teams/rc2023/Oxsy/start ${HOST} ${HOMEDIR} 12 &
