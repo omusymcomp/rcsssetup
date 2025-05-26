@@ -2,6 +2,8 @@
 
 This tool automates the process of setting up the RoboCup Soccer 2D League environment, installing teams, and configuring dependencies. With a single command, you can get your RoboCup simulation up and running quickly.
 
+[Demonstration on YouTube](https://youtu.be/7Pe8s5RESww)
+
 ## Features
 
 - Automated environment setup for RoboCup Soccer 2D League
