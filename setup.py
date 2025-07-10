@@ -4,6 +4,7 @@ import sys
 import os
 import getpass
 import gdown
+import shutil
 
 def main():
     # Initialize Git LFS globally
@@ -324,8 +325,30 @@ class SetupTeams:
 
             # bins_Day4 → rc2024 にリネーム
             extracted_path = os.path.join(self.base_dir, "bins_Day4")
+            
             if os.path.exists(extracted_path):
-                os.rename(extracted_path, self.rc2024_dir)
+                try:
+                    if not os.path.exists(self.rc2024_dir):
+                        os.rename(extracted_path, self.rc2024_dir)
+                    else:
+                        for item in os.listdir(extracted_path):
+                            s = os.path.join(extracted_path, item)
+                            d = os.path.join(self.rc2024_dir, item)
+
+                            if os.path.isdir(s):
+                                if os.path.exists(d):
+                                    print(f"Directory '{d}' already exists. Merging contents.")
+                                shutil.copytree(s, d, dirs_exist_ok=True)
+                            else:
+                                print(f"Copying file '{s}' to '{d}'")
+                                shutil.copy2(s, d)
+
+                        # Copy 完了後に削除
+                        shutil.rmtree(extracted_path)
+
+                except Exception as e:
+                    print(f"Error during copying or removing: {e}")
+                    raise
 
             # 圧縮ファイルを削除
             os.remove(local_tar_path)
