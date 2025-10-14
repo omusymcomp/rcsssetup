@@ -370,7 +370,6 @@ class SetupTeams:
             print(f"{self.base_team_dir}/librcsc exists, skipping git clone")
         librcsc_dir = os.path.join(self.base_team_dir, "librcsc")
         self.run_command("git clean -xfd", cwd=librcsc_dir)
-        self.run_command("git checkout 348f41e", cwd=librcsc_dir)
         self.run_command("./bootstrap", cwd=librcsc_dir)
         self.run_command(f"./configure --prefix={self.configure_for_teams_dir}", cwd=librcsc_dir)
         self.run_command(self.make_command, cwd=librcsc_dir)
