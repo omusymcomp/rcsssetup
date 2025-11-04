@@ -1,0 +1,31 @@
+#!/bin/bash
+
+HOST=$1
+BASEDIR=$2
+NUM=$3
+
+AGENTDIR=/home/username/rcss/teams/rc2023/FRA-UNIted/agent/bin
+AGENT=FRA-UNIted_Agent
+AGENTOPT="-host $HOST"
+
+COACHDIR=/home/username/rcss/teams/rc2023/FRA-UNIted/coach/bin
+COACH=FRA-UNIted_Coach
+COACHOPT="-server_9.4 0 -host $HOST"
+
+cd ${BASEDIR}
+
+case $NUM in
+    1)
+	cd $AGENTDIR
+        ./$AGENT -goalie $AGENTOPT
+        ;;
+    12)
+	cd $COACHDIR
+        ./$COACH $COACHOPT
+        ;;
+    *)
+	cd $AGENTDIR
+        ./$AGENT $AGENTOPT
+        ;;
+esac
+

@@ -1,0 +1,26 @@
+#!/bin/sh
+BASE_DIR=$HOME/rcss/teams/rc2023/Damavand/
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 1 &
+sleep 2
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 2  &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 3  &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 4  &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 5  &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 6  &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 7  &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 8  &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 9  &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 10 &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 11 &
+sleep 0.3
+/home/username/rcss/teams/rc2023/Damavand/start 127.0.0.1 ${BASE_DIR} 12 &
+

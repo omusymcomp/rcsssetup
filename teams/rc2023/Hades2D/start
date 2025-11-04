@@ -1,0 +1,44 @@
+#!/bin/sh
+
+HOST=$1
+BASEDIR=$2
+NUM=$3
+
+LIBPATH=/home/username/rcss/teams/rc2023/Hades2D/lib
+if [ x"$LIBPATH" != x ]; then
+if [ x"$LD_LIBRARY_PATH" = x ]; then
+    LD_LIBRARY_PATH=$LIBPATH
+else
+    LD_LIBRARY_PATH=$LIBPATH:$LD_LIBRARY_PATH
+fi
+export LD_LIBRARY_PATH
+fi
+
+
+teamname="Hades2D"
+
+player="/home/username/rcss/teams/rc2023/Hades2D/sample_player"
+coach="/home/username/rcss/teams/rc2023/Hades2D/sample_coach"
+
+config="/home/username/rcss/teams/rc2023/Hades2D/player.conf"
+coach_config="/home/username/rcss/teams/rc2023/Hades2D/coach.conf"
+config_dir="/home/username/rcss/teams/rc2023/Hades2D/formations-dt"
+opt="--player-config ${config}  --config_dir ${config_dir}"
+opt="${opt} -h ${HOST} -t ${teamname}"
+
+coachopt="--coach-config ${coach_config} --use_team_graphic on"
+coachopt="${coachopt} -h ${HOST} -t ${teamname}"
+
+cd $BASEDIR
+
+case $NUM in
+    1)
+        $player $opt -g
+        ;;
+    12)
+        $coach $coachopt
+        ;;
+    *)
+        $player $opt
+        ;;
+esac
