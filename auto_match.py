@@ -7,20 +7,19 @@ import getpass
 
 def main():
     parser = argparse.ArgumentParser()
+    base_team_choices = ["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
+                         "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
+                         "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d", "mars", "aeteam",
+                         "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024"]
+    team_choices_2025 = ["FRA-UNIted", "HELIOS2025", "ITAndroids", "oxsy", "Oxsy",
+                         "RoboCIn", "RoboTech", "SIRLab", "SRBIAU2D", "TitasdaRobotica", "YuShan2025"]
+    team_choices = list(dict.fromkeys(base_team_choices + team_choices_2025))
     parser.add_argument("-d", "--base_dir", dest="base_dir", default=os.path.expandvars("$HOME/rcss"), 
                         help="Specify the base directory for environment setup")
     parser.add_argument("-l", "--left_team_name", dest="left_team_name", default="HELIOS2025", 
-                        choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
-                                 "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
-                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars","aeteam", 
-                                 "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024",
-                                 "HELIOS2025", "YuShan2025"], help="Specify the left team name")
+                        choices=team_choices, help="Specify the left team name")
     parser.add_argument("-r", "--right_team_name", dest="right_team_name", default="YuShan2025", 
-                        choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
-                                 "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
-                                 "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars","aeteam",
-                                   "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024",
-                                   "HELIOS2025", "YuShan2025"], help="Specify the right team name")
+                        choices=team_choices, help="Specify the right team name")
     parser.add_argument("-n", "--match_number", dest="match_number", default=3, type=int, 
                         help="Specify the number of matches")
     parser.add_argument("--is_synch_mode", action="store_true", dest="is_synch_mode", help="Specify if synch mode should be enabled")
@@ -67,7 +66,15 @@ class AutoMatch:
 
     team_start_scripts_2025 = {
         "helios2025": "start.sh",
-        "yushan2025": "start.sh"
+        "yushan2025": "start.sh",
+        "fra-united": "start_team.sh",
+        "itandroids": "start.sh",
+        "oxsy": "startlocal",
+        "robocin": "startAll",
+        "robotech": "start.sh",
+        "sirlab": "start.sh",
+        "srbiau2d": "start.sh",
+        "titasdarobotica": "start.sh"
     }
 
     team_script_settings = {
