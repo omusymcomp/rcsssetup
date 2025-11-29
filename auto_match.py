@@ -74,7 +74,7 @@ class AutoMatch:
         "robotech": "start.sh",
         "sirlab": "start.sh",
         "srbiau2d": "start.sh",
-        "titasdarobotica": "start.sh"
+        "titasdarobotica": "localStartAll"
     }
 
     team_script_settings = {
@@ -85,12 +85,12 @@ class AutoMatch:
         },
         "rc2024": {
             "script_map": team_start_scripts_2024,
-            "use_bin": True,
+            "use_bin": False,
             "use_lower_key": True
         },
         "rc2025": {
             "script_map": team_start_scripts_2025,
-            "use_bin": True,
+            "use_bin": False,
             "use_lower_key": True
         }
     }
