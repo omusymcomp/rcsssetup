@@ -37,7 +37,7 @@ ${HOMEDIR}/start ${HOST} ${HOMEDIR} ${port} ${coach_port} 2 &
 sleep 0.1
 ${HOMEDIR}/start ${HOST} ${HOMEDIR} ${port} ${coach_port} 3 &
 sleep 0.1
-${HOMEDIR}/start ${HOST} ${HOMEDIR} ${port} ${coach_pocd rt} 4 &
+${HOMEDIR}/start ${HOST} ${HOMEDIR} ${port} ${coach_pocd} 4 &
 sleep 0.1
 ${HOMEDIR}/start ${HOST} ${HOMEDIR} ${port} ${coach_port} 5 &
 sleep 0.1
