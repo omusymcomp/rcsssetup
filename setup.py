@@ -39,6 +39,7 @@ def main():
         setup_tools.install_loganalyzer3()
         setup_teams.install_teams()
         setup_teams.install_2024_teams()
+        setup_teams.install_2025_teams()
         setup_teams.install_helios_base()
         setup_teams.replace_username()
         setup_teams.add_execution_permission()
@@ -57,6 +58,7 @@ def main():
     elif args.install_target == "teams":
         setup_teams.install_teams()
         setup_teams.install_2024_teams()
+        setup_teams.install_2025_teams()
         setup_teams.replace_username()
         setup_teams.add_execution_permission()
     else:
@@ -244,6 +246,7 @@ class SetupTeams:
         self.user_teams_dir = os.path.join(self.base_dir, "teams")
         self.base_team_dir = os.path.join(self.base_dir, "teams", "base_team")
         self.rc2024_dir = os.path.join(self.base_dir, "teams", "rc2024")
+        self.rc2025_dir = os.path.join(self.base_dir, "teams", "rc2025")
         self.rc2023_dir = os.path.join(self.base_dir, "teams", "rc2023")
         self.rc2022_dir = os.path.join(self.base_dir, "teams", "rc2022")
         self.rcsssetup_teams_dir = f"/home/{username}/rcsssetup/teams"
@@ -357,6 +360,43 @@ class SetupTeams:
             self.run_command(f"cp -r {self.rcsssetup_teams_dir}/. {self.teams_dir}/")
         else:
             print(f"{self.rc2024_dir} already exists. Skipping download.")
+
+    def install_2025_teams(self):
+        os.makedirs(self.rc2025_dir, exist_ok=True)
+        if os.listdir(self.rc2025_dir):
+            print(f"{self.rc2025_dir} already contains files. Skipping RoboCup 2025 download.")
+            return
+
+        print("Downloading RoboCup 2025 teams...")
+        folder_id = "1aFIsKajq2vxJaDYsIjfKBavj4Nv5Zfgg"
+        download_destination = os.path.join(self.base_dir, "rc2025_download")
+
+        if os.path.exists(download_destination):
+            shutil.rmtree(download_destination)
+
+        try:
+            gdown.download_folder(id=folder_id, output=download_destination, quiet=False, use_cookies=False)
+        except Exception as e:
+            print(f"Failed to download RoboCup 2025 teams: {e}")
+            raise
+
+        try:
+            if not os.path.exists(download_destination):
+                raise FileNotFoundError(f"Expected download folder not found: {download_destination}")
+
+            for item in os.listdir(download_destination):
+                src = os.path.join(download_destination, item)
+                dst = os.path.join(self.rc2025_dir, item)
+
+                if os.path.isdir(src):
+                    shutil.copytree(src, dst, dirs_exist_ok=True)
+                else:
+                    shutil.copy2(src, dst)
+        finally:
+            if os.path.exists(download_destination):
+                shutil.rmtree(download_destination)
+
+        self.run_command(f"cp -r {self.rcsssetup_teams_dir}/. {self.teams_dir}/")
 
 
     def install_librcsc_for_helios_base(self):

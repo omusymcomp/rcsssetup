@@ -9,21 +9,23 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--base_dir", dest="base_dir", default=os.path.expandvars("$HOME/rcss"), 
                         help="Specify the base directory for environment setup")
-    parser.add_argument("-l", "--left_team_name", dest="left_team_name", default="helios2024", 
+    parser.add_argument("-l", "--left_team_name", dest="left_team_name", default="HELIOS2025", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
                                  "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars","aeteam", 
-                                 "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024"], help="Specify the left team name")
-    parser.add_argument("-r", "--right_team_name", dest="right_team_name", default="cyrus", 
+                                 "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024",
+                                 "HELIOS2025", "YuShan2025"], help="Specify the left team name")
+    parser.add_argument("-r", "--right_team_name", dest="right_team_name", default="YuShan2025", 
                         choices=["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                                  "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
                                  "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d","mars","aeteam",
-                                   "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024"], help="Specify the right team name")
+                                   "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024",
+                                   "HELIOS2025", "YuShan2025"], help="Specify the right team name")
     parser.add_argument("-n", "--match_number", dest="match_number", default=3, type=int, 
                         help="Specify the number of matches")
     parser.add_argument("--is_synch_mode", action="store_true", dest="is_synch_mode", help="Specify if synch mode should be enabled")
-    parser.add_argument("-y", "--team_year", dest="team_year", default="rc2024", choices=["rc2023", "rc2024"],
-                    help="Specify the year of the team binaries to use (rc2023 or rc2024)")
+    parser.add_argument("-y", "--team_year", dest="team_year", default="rc2025", choices=["rc2023", "rc2024", "rc2025"],
+                    help="Specify the year of the team binaries to use (rc2023, rc2024, or rc2025)")
 
     
     args = parser.parse_args()
@@ -32,7 +34,7 @@ def main():
 
 class AutoMatch:
     # チームごとの起動スクリプトを定義
-    team_start_scripts_203 = {
+    team_start_scripts_2023 = {
         "CYRUS": "startAll",
         "FRA-UNIted": "startlocal.sh",
         # "Hermes2D": "start.sh",
@@ -63,11 +65,47 @@ class AutoMatch:
         "yushan2024": "start.sh"
     }
 
+    team_start_scripts_2025 = {
+        "helios2025": "start.sh",
+        "yushan2025": "start.sh"
+    }
+
+    team_script_settings = {
+        "rc2023": {
+            "script_map": team_start_scripts_2023,
+            "use_bin": False,
+            "use_lower_key": False
+        },
+        "rc2024": {
+            "script_map": team_start_scripts_2024,
+            "use_bin": True,
+            "use_lower_key": True
+        },
+        "rc2025": {
+            "script_map": team_start_scripts_2025,
+            "use_bin": True,
+            "use_lower_key": True
+        }
+    }
+
     def __init__(self, args):
         now = datetime.now()
         self.formatted_date_time = now.strftime("%Y%m%d%H%M%S")
         self.log_dir = os.getenv("MATCH_LOG_DIR", f"{args.base_dir}/log_analysis/log/{self.formatted_date_time}")
-        self.team_binary_dir = os.getenv("TEAM_DIR", f"{args.base_dir}/teams/rc2024")
+        self.team_year = args.team_year
+        team_dir_env = os.getenv("TEAM_DIR")
+        if team_dir_env:
+            resolved_dir = self.change_home_path(team_dir_env)
+            self.team_binary_dir = resolved_dir
+            inferred_year = next((year for year in self.team_script_settings if year in resolved_dir), None)
+            if inferred_year:
+                self.team_year = inferred_year
+        else:
+            self.team_binary_dir = f"{args.base_dir}/teams/{self.team_year}"
+        self.team_script_setting = self.team_script_settings.get(
+            self.team_year,
+            self.team_script_settings["rc2024"]
+        )
         self.left_team_path_list = []
         self.right_team_path_list = []
         self.output_text = None
@@ -84,26 +122,39 @@ class AutoMatch:
 
     def get_custom_team_path_list(self):
         custom_dir = self.change_home_path(f"{self.team_binary_dir}/custom")
-        team_dirs = [name for name in os.listdir(custom_dir)]
+        if not os.path.isdir(custom_dir):
+            print(f"Custom team directory not found: {custom_dir}")
+            return []
+
+        team_dirs = os.listdir(custom_dir)
         path_list = []
+        use_bin = self.team_script_setting["use_bin"]
 
         for team_name in team_dirs:
-            script_name = self.team_start_scripts.get(team_name, "start.sh")
-            path_list.append(f"{custom_dir}/{team_name}/{script_name}")
+            script_name = self._resolve_script_name(team_name)
+            team_base_path = f"{custom_dir}/{team_name}"
+            if use_bin:
+                path_list.append(f"{team_base_path}/bin/{script_name}")
+            else:
+                path_list.append(f"{team_base_path}/{script_name}")
 
         return path_list
 
     def get_team_path(self, team_name):
         team_path_base = f"{self.team_binary_dir}/{team_name}"
-        
-        if "rc2024" in self.team_binary_dir:
-            # rc2024 用のスクリプト名マッピングを使う
-            script_name = self.team_start_scripts_2024.get(team_name.lower(), "start.sh")
+        script_name = self._resolve_script_name(team_name)
+
+        if self.team_script_setting["use_bin"]:
             return f"{team_path_base}/bin/{script_name}"
+        return f"{team_path_base}/{script_name}"
+
+    def _resolve_script_name(self, team_name):
+        script_map = self.team_script_setting["script_map"]
+        if self.team_script_setting["use_lower_key"]:
+            key = team_name.lower()
         else:
-            # 通常のスクリプト名マッピングを使う
-            script_name = self.team_start_scripts_2023.get(team_name, "start.sh")
-            return f"{team_path_base}/{script_name}"
+            key = team_name
+        return script_map.get(key, "start.sh")
 
     def run_command(self, command):
         try:
