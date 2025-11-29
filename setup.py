@@ -37,9 +37,9 @@ def main():
         setup_tools.install_rcssmonitor()
         # setup_tools.install_fedit2()
         setup_tools.install_loganalyzer3()
+        setup_teams.install_2025_teams()
         setup_teams.install_teams()
         setup_teams.install_2024_teams()
-        setup_teams.install_2025_teams()
         setup_teams.install_helios_base()
         setup_teams.replace_username()
         setup_teams.add_execution_permission()
@@ -56,9 +56,9 @@ def main():
         # setup_tools.install_fedit2()
         setup_tools.install_loganalyzer3()
     elif args.install_target == "teams":
+        setup_teams.install_2025_teams()
         setup_teams.install_teams()
         setup_teams.install_2024_teams()
-        setup_teams.install_2025_teams()
         setup_teams.replace_username()
         setup_teams.add_execution_permission()
     else:
