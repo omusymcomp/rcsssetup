@@ -5,6 +5,7 @@ import os
 import getpass
 import gdown
 import shutil
+import tarfile
 
 def main():
     # Initialize Git LFS globally
@@ -370,9 +371,11 @@ class SetupTeams:
         print("Downloading RoboCup 2025 teams...")
         folder_id = "1aFIsKajq2vxJaDYsIjfKBavj4Nv5Zfgg"
         download_destination = os.path.join(self.base_dir, "rc2025_download")
+        extract_destination = os.path.join(self.base_dir, "rc2025_extracted")
 
-        if os.path.exists(download_destination):
-            shutil.rmtree(download_destination)
+        for path in (download_destination, extract_destination):
+            if os.path.exists(path):
+                shutil.rmtree(path)
 
         try:
             gdown.download_folder(id=folder_id, output=download_destination, quiet=False, use_cookies=False)
@@ -384,8 +387,29 @@ class SetupTeams:
             if not os.path.exists(download_destination):
                 raise FileNotFoundError(f"Expected download folder not found: {download_destination}")
 
-            for item in os.listdir(download_destination):
-                src = os.path.join(download_destination, item)
+            tar_files = []
+            for root, _, files in os.walk(download_destination):
+                for name in files:
+                    if name.endswith((".tar.gz", ".tar.xz", ".tar")):
+                        tar_files.append(os.path.join(root, name))
+
+            if tar_files:
+                os.makedirs(extract_destination, exist_ok=True)
+                for tar_path in tar_files:
+                    try:
+                        mode = "r:*"
+                        with tarfile.open(tar_path, mode) as tar:
+                            tar.extractall(path=extract_destination)
+                    except tarfile.TarError as tar_error:
+                        print(f"Failed to extract {tar_path}: {tar_error}")
+                        raise
+
+                source_root = extract_destination
+            else:
+                source_root = download_destination
+
+            for item in os.listdir(source_root):
+                src = os.path.join(source_root, item)
                 dst = os.path.join(self.rc2025_dir, item)
 
                 if os.path.isdir(src):
@@ -395,6 +419,8 @@ class SetupTeams:
         finally:
             if os.path.exists(download_destination):
                 shutil.rmtree(download_destination)
+            if os.path.exists(extract_destination):
+                shutil.rmtree(extract_destination)
 
         self.run_command(f"cp -r {self.rcsssetup_teams_dir}/. {self.teams_dir}/")
 
