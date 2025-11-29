@@ -242,6 +242,8 @@ class SetupTeams:
         # Dynamically get the username of the executor and construct the path
         #username = os.getlogin()
         username = getpass.getuser()
+        self.repo_root = os.path.dirname(os.path.abspath(__file__))
+        self.repo_teams_dir = os.path.join(self.repo_root, "teams")
         self.base_dir = args.base_dir
         self.teams_dir = os.path.join(self.base_dir, "teams")
         self.user_teams_dir = os.path.join(self.base_dir, "teams")
@@ -423,6 +425,21 @@ class SetupTeams:
                 shutil.rmtree(extract_destination)
 
         self.run_command(f"cp -r {self.rcsssetup_teams_dir}/. {self.teams_dir}/")
+        self.copy_repo_team_override("rc2025", "YuShan2025")
+
+    def copy_repo_team_override(self, year_dir, team_name):
+        repo_team_dir = os.path.join(self.repo_teams_dir, year_dir, team_name)
+        target_team_dir = os.path.join(self.teams_dir, year_dir, team_name)
+
+        if not os.path.isdir(repo_team_dir):
+            return
+
+        try:
+            shutil.copytree(repo_team_dir, target_team_dir, dirs_exist_ok=True)
+            print(f"Copied override files for {team_name} from {repo_team_dir} to {target_team_dir}")
+        except Exception as e:
+            print(f"Failed to copy override files for {team_name}: {e}")
+            raise
 
 
     def install_librcsc_for_helios_base(self):

@@ -66,7 +66,7 @@ class AutoMatch:
 
     team_start_scripts_2025 = {
         "helios2025": "start.sh",
-        "yushan2025": "localStartAll",
+        "yushan2025": "startAll.sh",
         "fra-united": "start_team.sh",
         "itandroids": "start.sh",
         "oxsy": "startlocal",
