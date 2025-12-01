@@ -200,6 +200,14 @@ This script provides several command-line options to control match settings:
     python3 auto_match.py -n 5
     ```
 
+- `-y <TEAM_YEAR>` or `--team_year <TEAM_YEAR>`
+  - Description: Specify which year's team binaries/scripts to use. Accepted values are `rc2023`, `rc2024`, and `rc2025`.
+  - Default: `rc2025`
+  - Example:
+    ```bash
+    python3 auto_match.py -y rc2024
+    ```
+
 - `is_synch_mode`
   - Description: Enable synchronized mode. When this flag is set, the server runs in synchronous mode.
   - Default: `Disabled`
@@ -282,5 +290,4 @@ By following these steps, you can manually initiate and observe a match in the R
 ## References
 
 - Hidehisa Akiyama, Tomoharu Nakashima, HELIOS Base: An Open Source Package for the RoboCup Soccer 2D Simulation, In Sven Behnke, Manuela Veloso, Arnoud Visser, and Rong Xiong editors, RoboCup2013: Robot World XVII, Lecture Notes in Artificial Intelligence, Springer Verlag, Berlin, 2014. http://dx.doi.org/10.1007/978-3-662-44468-9_46
-
 
