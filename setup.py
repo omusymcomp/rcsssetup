@@ -3,9 +3,59 @@ import argparse
 import sys
 import os
 import getpass
-import gdown
 import shutil
 import tarfile
+
+
+def _running_in_virtualenv():
+    base_prefix = getattr(sys, "base_prefix", sys.prefix)
+    return hasattr(sys, "real_prefix") or sys.prefix != base_prefix
+
+
+def _is_gdown_compatible(module):
+    return hasattr(module, "download_folder")
+
+
+def _install_or_upgrade_gdown():
+    commands = [
+        [sys.executable, "-m", "pip", "install", "--upgrade", "gdown"],
+    ]
+
+    if not _running_in_virtualenv():
+        commands.append([sys.executable, "-m", "pip", "install", "--user", "--upgrade", "gdown"])
+
+    last_error = None
+    for cmd in commands:
+        try:
+            subprocess.run(cmd, check=True)
+            return
+        except subprocess.CalledProcessError as exc:
+            last_error = exc
+
+    raise RuntimeError("Failed to install gdown with pip. Please run 'python3 -m pip install --upgrade gdown' manually.") from last_error
+
+
+def ensure_gdown():
+    try:
+        import gdown as gd
+        if _is_gdown_compatible(gd):
+            return gd
+        print("Detected an incompatible gdown version. Upgrading via pip...")
+    except ImportError:
+        print("gdown is not installed. Installing via pip...")
+
+    _install_or_upgrade_gdown()
+    if "gdown" in sys.modules:
+        del sys.modules["gdown"]
+
+    import gdown as gd
+    if not _is_gdown_compatible(gd):
+        raise RuntimeError("The installed gdown version is missing required APIs. Please upgrade gdown manually.")
+
+    return gd
+
+
+gdown = ensure_gdown()
 
 def main():
     # Initialize Git LFS globally

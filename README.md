@@ -21,13 +21,17 @@ This tool automates the process of setting up the RoboCup Soccer 2D League envir
 
 1. **Install git, Python3, pip, and git-lfs**
     ```bash
-    sudo apt-get install -y git python3 python3-pip git-lfs gdown
+    sudo apt-get install -y git python3 python3-pip git-lfs
     ```
-2. **Clone this repository**:
+2. **Install/upgrade gdown via pip** (the apt package is too old for folder downloads):
+    ```bash
+    python3 -m pip install --upgrade gdown
+    ```
+3. **Clone this repository**:
     ```bash
     git clone https://github.com/omusymcomp/rcsssetup.git
     ```
-3. **Set up the environment**:
+4. **Set up the environment**:
     Use the script to install everything necessary to run RoboCup Soccer 2D League:
     ```bash
     cd rcsssetup
@@ -290,4 +294,3 @@ By following these steps, you can manually initiate and observe a match in the R
 ## References
 
 - Hidehisa Akiyama, Tomoharu Nakashima, HELIOS Base: An Open Source Package for the RoboCup Soccer 2D Simulation, In Sven Behnke, Manuela Veloso, Arnoud Visser, and Rong Xiong editors, RoboCup2013: Robot World XVII, Lecture Notes in Artificial Intelligence, Springer Verlag, Berlin, 2014. http://dx.doi.org/10.1007/978-3-662-44468-9_46
-
