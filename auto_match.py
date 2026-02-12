@@ -10,7 +10,7 @@ def main():
     base_team_choices = ["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                          "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
                          "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d", "mars", "aeteam",
-                         "cyrus", "oxcy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024"]
+                         "cyrus", "oxsy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024"]
     team_choices_2025 = ["FRA-UNIted", "HELIOS2025", "ITAndroids", "oxsy", "Oxsy",
                          "RoboCIn", "RoboTech", "SIRLab", "SRBIAU2D", "TitasdaRobotica", "YuShan2025"]
     team_choices = list(dict.fromkeys(base_team_choices + team_choices_2025))
@@ -55,7 +55,7 @@ class AutoMatch:
     team_start_scripts_2024 = {
         "aeteam": "start.sh",
         "cyrus": "startAll",
-        "oxcy": "startlocal",
+        "oxsy": "startlocal",
         "r2d2": "start.sh",
         "helios": "start.sh",
         "fra-united": "start_team.sh",
