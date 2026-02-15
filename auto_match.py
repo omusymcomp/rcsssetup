@@ -160,7 +160,12 @@ class AutoMatch:
 
     def get_team_path(self, team_name):
         if team_name == "helios-base":
-            return f"{self.base_dir}/teams/base_team/helios-base/start.sh"
+            helios_base_root = f"{self.base_dir}/teams/base_team/helios-base"
+            src_start = f"{helios_base_root}/src/start.sh"
+            root_start = f"{helios_base_root}/start.sh"
+            if os.path.exists(src_start):
+                return src_start
+            return root_start
 
         team_path_base = f"{self.team_binary_dir}/{team_name}"
         script_name = self._resolve_script_name(team_name)
