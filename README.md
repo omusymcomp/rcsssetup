@@ -189,7 +189,7 @@ This script provides several command-line options to control match settings:
   - Note: Team names that exist in multiple years should use the 2025 names first (for example `HELIOS2025` instead of `helios` or `HELIOS2023`).
   - Example:
     ```bash
-    python3 auto_match.py -y rc2024
+    python3 auto_match.py -y rc2025 -l HELIOS2025 -r YuShan2025
     ```
 
 - `is_synch_mode`
