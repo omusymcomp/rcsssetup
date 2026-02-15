@@ -10,7 +10,8 @@ def main():
     base_team_choices = ["custom", "HELIOS2023", "helios-base", "YuShan2023", "CYRUS",
                          "EMPEROR", "Hermes2D", "Oxsy", "RoboCIn", "Damavand", "FRA-UNIted",
                          "Hades2D", "ITAndroids", "The8", "R3CESBU", "robo2d", "mars", "aeteam",
-                         "cyrus", "oxsy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024"]
+                         "cyrus", "oxsy", "r2d2", "helios", "fra-united", "itandroids", "yushan2024",
+                         "hrlios-base"]
     team_choices_2025 = ["FRA-UNIted", "HELIOS2025", "ITAndroids", "oxsy", "Oxsy",
                          "RoboCIn", "RoboTech", "SIRLab", "SRBIAU2D", "TitasdaRobotica", "YuShan2025"]
     team_choices = list(dict.fromkeys(base_team_choices + team_choices_2025))
@@ -98,6 +99,7 @@ class AutoMatch:
     def __init__(self, args):
         now = datetime.now()
         self.formatted_date_time = now.strftime("%Y%m%d%H%M%S")
+        self.base_dir = args.base_dir
         self.log_dir = os.getenv("MATCH_LOG_DIR", f"{args.base_dir}/log_analysis/log/{self.formatted_date_time}")
         self.team_year = args.team_year
         team_dir_env = os.getenv("TEAM_DIR")
@@ -117,15 +119,24 @@ class AutoMatch:
         self.right_team_path_list = []
         self.output_text = None
 
-        if args.left_team_name == "custom":
+        left_team_name = self.normalize_team_name(args.left_team_name)
+        right_team_name = self.normalize_team_name(args.right_team_name)
+
+        if left_team_name == "custom":
             self.left_team_path_list = self.get_custom_team_path_list()
         else:
-            self.left_team_path_list.append(self.get_team_path(args.left_team_name))
+            self.left_team_path_list.append(self.get_team_path(left_team_name))
 
-        if args.right_team_name == "custom":
+        if right_team_name == "custom":
             self.right_team_path_list = self.get_custom_team_path_list()
         else:
-            self.right_team_path_list.append(self.get_team_path(args.right_team_name))
+            self.right_team_path_list.append(self.get_team_path(right_team_name))
+
+    def normalize_team_name(self, team_name):
+        alias_map = {
+            "hrlios-base": "helios-base",
+        }
+        return alias_map.get(team_name, team_name)
 
     def get_custom_team_path_list(self):
         custom_dir = self.change_home_path(f"{self.team_binary_dir}/custom")
@@ -148,6 +159,9 @@ class AutoMatch:
         return path_list
 
     def get_team_path(self, team_name):
+        if team_name == "helios-base":
+            return f"{self.base_dir}/teams/base_team/helios-base/start.sh"
+
         team_path_base = f"{self.team_binary_dir}/{team_name}"
         script_name = self._resolve_script_name(team_name)
 
