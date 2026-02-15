@@ -159,41 +159,20 @@ This script provides several command-line options to control match settings:
     ```
 
 - `-l <LEFT_TEAM_NAME>` or `--left_team_name <LEFT_TEAM_NAME>`
-  - Description: Specify the name of the team to play on the left side. 
-    - `HELIOS2023`  
-    - `helios-base`  
-    - `YuShan2023`  
-    - `CYRUS`  
-    - `Oxsy`  
-    - `RoboCIn`  
-    - `Damavand`  
-    - `FRA-UNIted`  
-    - `Hades2D`  
-    - `ITAndroids`  
-    - `The8`  
-    - `R3CESBU`  
-    - `robo2d`  
-  - Default: `HELIOS2023`
+  - Description: Specify the name of the team to play on the left side.
+  - Default: `HELIOS2025`
+  - Accepted values (same as `-r`):
+    - Common: `custom`, `helios-base`
+    - 2025 teams (recommended when duplicated): `HELIOS2025`, `YuShan2025`, `RoboTech`, `SIRLab`, `SRBIAU2D`, `TitasdaRobotica`, `RoboCIn`, `FRA-UNIted`, `ITAndroids`, `Oxsy`, `oxsy`
+    - 2024 teams: `aeteam`, `cyrus`, `r2d2`, `helios`, `fra-united`, `itandroids`, `mars`, `yushan2024`
+    - 2023 teams: `HELIOS2023`, `YuShan2023`, `CYRUS`, `EMPEROR`, `Hermes2D`, `Oxsy`, `RoboCIn`, `Damavand`, `FRA-UNIted`, `Hades2D`, `ITAndroids`, `The8`, `R3CESBU`, `robo2d`
 
 - `-r <RIGHT_TEAM_NAME>` or `--right_team_name <RIGHT_TEAM_NAME>`
   - Description: Specify the name of the team to play on the right side.
-    - `HELIOS2023`  
-    - `helios-base`  
-    - `YuShan2023`  
-    - `CYRUS`  
-    - `Oxsy`  
-    - `RoboCIn`  
-    - `Damavand`  
-    - `FRA-UNIted`  
-    - `Hades2D`  
-    - `ITAndroids`  
-    - `The8`  
-    - `R3CESBU`  
-    - `robo2d`   
-  - Default: `CYRUS`
+  - Default: `YuShan2025`
   - Example:  
     ```bash
-    python3 auto_match.py -l HELIOS2023 -r CYRUS
+    python3 auto_match.py -l HELIOS2025 -r YuShan2025
     ```
 
 - `-n <NUM_MATCH>` or `--match_number <NUM_MATCH>`
@@ -207,6 +186,7 @@ This script provides several command-line options to control match settings:
 - `-y <TEAM_YEAR>` or `--team_year <TEAM_YEAR>`
   - Description: Specify which year's team binaries/scripts to use. Accepted values are `rc2023`, `rc2024`, and `rc2025`.
   - Default: `rc2025`
+  - Note: Team names that exist in multiple years should use the 2025 names first (for example `HELIOS2025` instead of `helios` or `HELIOS2023`).
   - Example:
     ```bash
     python3 auto_match.py -y rc2024
@@ -240,6 +220,9 @@ $BASE_DIR/log_analysis/log/YYYYMMDDHHMMSS/
 
 you can configure the following environment variables for advance setups:
 - `TEAM_DIR`: Directory where teams are stored.
+  - `helios-base` is resolved from `BASE_DIR` (not `TEAM_DIR`) in this order:
+    1. `$BASE_DIR/teams/base_team/helios-base/src/start.sh`
+    2. `$BASE_DIR/teams/base_team/helios-base/start.sh` (fallback)
 - `MATCH_LOG_DIR`: Directory where auto match logs are saved.
 ```bash
 export TEAM_DIR=~/robocup/teams
