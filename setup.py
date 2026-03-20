@@ -5,6 +5,7 @@ import os
 import getpass
 import shutil
 import tarfile
+import re
 
 
 def _running_in_virtualenv():
@@ -309,6 +310,96 @@ class SetupTeams:
         if self.jobs:
             self.make_command += f" -j {self.jobs}"
 
+    def ensure_team_year_suffixes(self, year_dir):
+        year_root = os.path.join(self.teams_dir, year_dir)
+        year_suffix = year_dir.removeprefix("rc")
+        if not os.path.isdir(year_root):
+            return
+
+        for team_name in os.listdir(year_root):
+            source_path = os.path.join(year_root, team_name)
+            if not os.path.isdir(source_path):
+                continue
+
+            target_name = self.normalize_team_dir_name(year_dir, team_name)
+            if target_name == team_name:
+                continue
+
+            target_path = os.path.join(year_root, target_name)
+
+            if os.path.exists(target_path):
+                print(f"Skipping rename because target already exists: {target_path}")
+                continue
+
+            os.rename(source_path, target_path)
+            print(f"Renamed team directory: {source_path} -> {target_path}")
+
+    def normalize_team_dir_name(self, year_dir, team_name):
+        year_suffix = year_dir.removeprefix("rc")
+        if re.search(rf"{year_suffix}$", team_name):
+            return team_name
+        return f"{team_name}{year_suffix}"
+
+    def copy_support_teams(self):
+        if not os.path.isdir(self.rcsssetup_teams_dir):
+            print(f"Support team directory not found, skipping copy: {self.rcsssetup_teams_dir}")
+            return
+
+        for item in os.listdir(self.rcsssetup_teams_dir):
+            source_path = os.path.join(self.rcsssetup_teams_dir, item)
+            target_path = os.path.join(self.teams_dir, item)
+
+            if os.path.isdir(source_path) and re.fullmatch(r"rc20\d{2}", item):
+                self.copy_support_year_dir(item, source_path)
+                continue
+
+            if os.path.isdir(source_path):
+                shutil.copytree(source_path, target_path, dirs_exist_ok=True)
+            else:
+                shutil.copy2(source_path, target_path)
+
+    def copy_support_year_dir(self, year_dir, source_year_dir):
+        target_year_dir = os.path.join(self.teams_dir, year_dir)
+        os.makedirs(target_year_dir, exist_ok=True)
+
+        for item in os.listdir(source_year_dir):
+            source_path = os.path.join(source_year_dir, item)
+            target_name = self.normalize_team_dir_name(year_dir, item) if os.path.isdir(source_path) else item
+            target_path = os.path.join(target_year_dir, target_name)
+
+            if os.path.isdir(source_path):
+                shutil.copytree(source_path, target_path, dirs_exist_ok=True)
+            else:
+                shutil.copy2(source_path, target_path)
+
+    def copy_repo_team_overrides(self):
+        if not os.path.isdir(self.repo_teams_dir):
+            print(f"Repository team override directory not found, skipping copy: {self.repo_teams_dir}")
+            return
+
+        for year_dir in os.listdir(self.repo_teams_dir):
+            source_year_dir = os.path.join(self.repo_teams_dir, year_dir)
+            if not os.path.isdir(source_year_dir) or not re.fullmatch(r"rc20\d{2}", year_dir):
+                continue
+
+            self.copy_repo_year_dir(year_dir, source_year_dir)
+
+    def copy_repo_year_dir(self, year_dir, source_year_dir):
+        target_year_dir = os.path.join(self.teams_dir, year_dir)
+        os.makedirs(target_year_dir, exist_ok=True)
+
+        for item in os.listdir(source_year_dir):
+            source_path = os.path.join(source_year_dir, item)
+            target_name = self.normalize_team_dir_name(year_dir, item) if os.path.isdir(source_path) else item
+            target_path = os.path.join(target_year_dir, target_name)
+
+            if os.path.isdir(source_path):
+                shutil.copytree(source_path, target_path, dirs_exist_ok=True)
+                print(f"Copied repository override for {year_dir}/{item} to {target_path}")
+            else:
+                shutil.copy2(source_path, target_path)
+                print(f"Copied repository file for {year_dir}/{item} to {target_path}")
+
     def run_command(self, command, cwd=None):
         try:
             # Be careful with shell=True, as it can lead to OS command injection
@@ -349,9 +440,13 @@ class SetupTeams:
             self.run_command(f"find {self.teams_dir} -name '*.tar.xz' -exec tar -xJvf '{{}}' -C {self.rc2023_dir} ';'", cwd=self.rc2023_dir)
             self.run_command(f"find {self.teams_dir} -name '*.tar.gz' -delete", cwd=self.rc2023_dir)
             self.run_command(f"find {self.teams_dir} -name '*.tar.xz' -delete", cwd=self.rc2023_dir)
-            self.run_command(f"cp -r {self.rcsssetup_teams_dir}/. {self.teams_dir}/")
+            self.copy_support_teams()
+            self.copy_repo_team_overrides()
         else:
             print(f"{self.rc2023_dir} exists, skipping download")
+            self.copy_support_teams()
+            self.copy_repo_team_overrides()
+        self.ensure_team_year_suffixes("rc2023")
         
         os.makedirs(self.rc2022_dir, exist_ok=True)
         if not os.path.exists(os.path.join(self.rc2022_dir, "helios2022")):
@@ -365,6 +460,9 @@ class SetupTeams:
             self.run_command(f"find {self.teams_dir} -name '*.tar.xz' -delete", cwd=self.rc2022_dir)
         else:
             print(f"{self.rc2022_dir} exists, skipping download")
+        self.copy_support_teams()
+        self.copy_repo_team_overrides()
+        self.ensure_team_year_suffixes("rc2022")
 
     def install_2024_teams(self):
         if not os.path.exists(os.path.join(self.rc2024_dir, "helios2024")):
@@ -410,14 +508,21 @@ class SetupTeams:
             os.remove(local_tar_path)
 
             # 初期設定をコピー（必要であれば）
-            self.run_command(f"cp -r {self.rcsssetup_teams_dir}/. {self.teams_dir}/")
+            self.copy_support_teams()
+            self.copy_repo_team_overrides()
         else:
             print(f"{self.rc2024_dir} already exists. Skipping download.")
+            self.copy_support_teams()
+            self.copy_repo_team_overrides()
+        self.ensure_team_year_suffixes("rc2024")
 
     def install_2025_teams(self):
         os.makedirs(self.rc2025_dir, exist_ok=True)
         if os.listdir(self.rc2025_dir):
             print(f"{self.rc2025_dir} already contains files. Skipping RoboCup 2025 download.")
+            self.copy_support_teams()
+            self.copy_repo_team_overrides()
+            self.ensure_team_year_suffixes("rc2025")
             return
 
         print("Downloading RoboCup 2025 teams...")
@@ -474,22 +579,9 @@ class SetupTeams:
             if os.path.exists(extract_destination):
                 shutil.rmtree(extract_destination)
 
-        self.run_command(f"cp -r {self.rcsssetup_teams_dir}/. {self.teams_dir}/")
-        self.copy_repo_team_override("rc2025", "YuShan2025")
-
-    def copy_repo_team_override(self, year_dir, team_name):
-        repo_team_dir = os.path.join(self.repo_teams_dir, year_dir, team_name)
-        target_team_dir = os.path.join(self.teams_dir, year_dir, team_name)
-
-        if not os.path.isdir(repo_team_dir):
-            return
-
-        try:
-            shutil.copytree(repo_team_dir, target_team_dir, dirs_exist_ok=True)
-            print(f"Copied override files for {team_name} from {repo_team_dir} to {target_team_dir}")
-        except Exception as e:
-            print(f"Failed to copy override files for {team_name}: {e}")
-            raise
+        self.copy_support_teams()
+        self.copy_repo_team_overrides()
+        self.ensure_team_year_suffixes("rc2025")
 
 
     def install_librcsc_for_helios_base(self):
