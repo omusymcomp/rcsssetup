@@ -4,7 +4,7 @@ HOST=$1
 BASEDIR=$2
 NUM=$3
 
-LIBPATH=/home/username/rcss/teams/rc2023/robo2d/LSD/lib/
+LIBPATH=/home/username/rcss/teams/rc2023/robo2d2023/LSD/lib/
 if [ x"$LIBPATH" != x ]; then
   if [ x"$LD_LIBRARY_PATH" = x ]; then
     LD_LIBRARY_PATH=$LIBPATH
@@ -16,12 +16,12 @@ fi
 
 teamname="Robo2D"
 
-player="/home/username/rcss/teams/rc2023/robo2d/sample_player"
-coach="/home/username/rcss/teams/rc2023/robo2d/sample_coach"
+player="/home/username/rcss/teams/rc2023/robo2d2023/sample_player"
+coach="/home/username/rcss/teams/rc2023/robo2d2023/sample_coach"
 
-config="/home/username/rcss/teams/rc2023/robo2d/player.conf"
-config_dir="/home/username/rcss/teams/rc2023/robo2d/formations-dt"
-coach_config="/home/username/rcss/teams/rc2023/robo2d/coach.conf"
+config="/home/username/rcss/teams/rc2023/robo2d2023/player.conf"
+config_dir="/home/username/rcss/teams/rc2023/robo2d2023/formations-dt"
+coach_config="/home/username/rcss/teams/rc2023/robo2d2023/coach.conf"
 
 opt="--player-config ${config} --config_dir ${config_dir}"
 opt="${opt} -h ${HOST} -t ${teamname}"

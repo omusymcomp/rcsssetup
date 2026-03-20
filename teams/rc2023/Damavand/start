@@ -5,7 +5,7 @@ BASEDIR=$2
 NUM=$3
 port=6000
 Port=6002
-LIBPATH=/home/username/rcss/teams/rc2023/Damavand/lib
+LIBPATH=/home/username/rcss/teams/rc2023/Damavand2023/lib
 if [ x"$LIBPATH" != x ]; then
   if [ x"$LD_LIBRARY_PATH" = x ]; then
     LD_LIBRARY_PATH=$LIBPATH
@@ -17,12 +17,12 @@ fi
 
 teamname="Damavand"
 
-player="/home/username/rcss/teams/rc2023/Damavand/sample_player"
-coach="/home/username/rcss/teams/rc2023/Damavand/sample_coach"
+player="/home/username/rcss/teams/rc2023/Damavand2023/sample_player"
+coach="/home/username/rcss/teams/rc2023/Damavand2023/sample_coach"
 
-config="/home/username/rcss/teams/rc2023/Damavand/player.conf"
-config_dir="/home/username/rcss/teams/rc2023/Damavand/formations-dt"
-coach_config="/home/username/rcss/teams/rc2023/Damavand/coach.conf"
+config="/home/username/rcss/teams/rc2023/Damavand2023/player.conf"
+config_dir="/home/username/rcss/teams/rc2023/Damavand2023/formations-dt"
+coach_config="/home/username/rcss/teams/rc2023/Damavand2023/coach.conf"
 
 opt="--player-config ${config} --config_dir ${config_dir}"
 opt="${opt} -h ${HOST} -t ${teamname} -p ${port}"

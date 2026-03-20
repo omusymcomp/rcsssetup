@@ -4,11 +4,11 @@ HOST=$1
 BASEDIR=$2
 NUM=$3
 
-AGENTDIR=/home/username/rcss/teams/rc2023/FRA-UNIted/agent/bin
+AGENTDIR=/home/username/rcss/teams/rc2023/FRA-UNIted2023/agent/bin
 AGENT=FRA-UNIted_Agent
 AGENTOPT="-host $HOST"
 
-COACHDIR=/home/username/rcss/teams/rc2023/FRA-UNIted/coach/bin
+COACHDIR=/home/username/rcss/teams/rc2023/FRA-UNIted2023/coach/bin
 COACH=FRA-UNIted_Coach
 COACHOPT="-server_9.4 0 -host $HOST"
 

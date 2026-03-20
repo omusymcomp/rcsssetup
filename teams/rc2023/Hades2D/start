@@ -4,7 +4,7 @@ HOST=$1
 BASEDIR=$2
 NUM=$3
 
-LIBPATH=/home/username/rcss/teams/rc2023/Hades2D/lib
+LIBPATH=/home/username/rcss/teams/rc2023/Hades2D2023/lib
 if [ x"$LIBPATH" != x ]; then
 if [ x"$LD_LIBRARY_PATH" = x ]; then
     LD_LIBRARY_PATH=$LIBPATH
@@ -17,12 +17,12 @@ fi
 
 teamname="Hades2D"
 
-player="/home/username/rcss/teams/rc2023/Hades2D/sample_player"
-coach="/home/username/rcss/teams/rc2023/Hades2D/sample_coach"
+player="/home/username/rcss/teams/rc2023/Hades2D2023/sample_player"
+coach="/home/username/rcss/teams/rc2023/Hades2D2023/sample_coach"
 
-config="/home/username/rcss/teams/rc2023/Hades2D/player.conf"
-coach_config="/home/username/rcss/teams/rc2023/Hades2D/coach.conf"
-config_dir="/home/username/rcss/teams/rc2023/Hades2D/formations-dt"
+config="/home/username/rcss/teams/rc2023/Hades2D2023/player.conf"
+coach_config="/home/username/rcss/teams/rc2023/Hades2D2023/coach.conf"
+config_dir="/home/username/rcss/teams/rc2023/Hades2D2023/formations-dt"
 opt="--player-config ${config}  --config_dir ${config_dir}"
 opt="${opt} -h ${HOST} -t ${teamname}"
 
