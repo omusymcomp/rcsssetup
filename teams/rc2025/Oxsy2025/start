@@ -4,8 +4,8 @@ HOST=$1
 BASEDIR=$2
 NUM=$3
 
-player="/home/username/rcss/teams/rc2025/oxsy2025/bin/bin/oxsyplayer"
-coach="/home/username/rcss/teams/rc2025/oxsy2025/bin/bin/oxsycoach"
+player="/home/username/rcss/teams/rc2025/Oxsy2025/bin/oxsyplayer"
+coach="/home/username/rcss/teams/rc2025/Oxsy2025/bin/oxsycoach"
 
 opt="-server_ip ${HOST}"
 
