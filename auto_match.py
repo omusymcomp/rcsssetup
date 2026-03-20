@@ -47,7 +47,7 @@ SCRIPT_SETTINGS = {
             "mars": "start.sh",
             "yushan2024": "start.sh",
         },
-        "use_bin": False,
+        "use_bin": True,
         "use_lower_key": True,
     },
     "rc2025": {
@@ -232,7 +232,7 @@ class AutoMatch:
                 continue
 
             script_name = get_script_name(self.default_custom_year, team_name)
-            path_list.append(os.path.join(team_dir, script_name))
+            path_list.append(self.build_team_script_path(team_dir, self.default_custom_year, script_name))
 
         return path_list
 
@@ -251,6 +251,12 @@ class AutoMatch:
 
         year_dir, team_dir = self.installed_teams[team_name]
         script_name = get_script_name(year_dir, team_name)
+        return self.build_team_script_path(team_dir, year_dir, script_name)
+
+    def build_team_script_path(self, team_dir, year_dir, script_name):
+        settings = SCRIPT_SETTINGS[year_dir]
+        if settings["use_bin"]:
+            return os.path.join(team_dir, "bin", script_name)
         return os.path.join(team_dir, script_name)
 
     def run_command(self, command):

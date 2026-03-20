@@ -313,7 +313,6 @@ class SetupTeams:
 
     def ensure_team_year_suffixes(self, year_dir):
         year_root = os.path.join(self.teams_dir, year_dir)
-        year_suffix = year_dir.removeprefix("rc")
         if not os.path.isdir(year_root):
             return
 
@@ -329,7 +328,9 @@ class SetupTeams:
             target_path = os.path.join(year_root, target_name)
 
             if os.path.exists(target_path):
-                print(f"Skipping rename because target already exists: {target_path}")
+                shutil.copytree(source_path, target_path, dirs_exist_ok=True)
+                shutil.rmtree(source_path)
+                print(f"Merged team directory: {source_path} -> {target_path}")
                 continue
 
             os.rename(source_path, target_path)
